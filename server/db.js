@@ -8,7 +8,7 @@ let cached = globalThis.__csMongo || (globalThis.__csMongo = { conn: null, promi
 export async function connectDb() {
   if (cached.conn && mongoose.connection.readyState === 1) return cached.conn;
   if (!cached.promise) {
-    cached.promise = mongoose.connect(config.mongoUri, { maxPoolSize: 10, serverSelectionTimeoutMS: 10000, autoIndex: !config.production })
+    cached.promise = mongoose.connect(config.mongoUri, { maxPoolSize: 10, serverSelectionTimeoutMS: 10000, autoIndex: true })
       .then(m => { cached.conn = m; return m; })
       .catch(e => { cached.promise = null; throw e; });
   }
