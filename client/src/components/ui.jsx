@@ -1,7 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useId, useRef, useState } from 'react';
 
+/** A labelled input. The hint is linked as a description, so screen readers read the label and the hint separately. */
 export function Field({ label, hint, children }) {
-  return <label className="field"><span className="field-label">{label}</span>{children}{hint ? <span className="field-hint">{hint}</span> : null}</label>;
+  const id = useId(), hid = id + '-hint', child = React.Children.only(children);
+  const input = React.cloneElement(child, { id: child.props.id || id, 'aria-describedby': hint ? hid : undefined });
+  return <div className="field"><label className="field-label" htmlFor={input.props.id}>{label}</label>{input}{hint ? <span id={hid} className="field-hint">{hint}</span> : null}</div>;
 }
 export function Notice({ kind = 'info', children }) { return children ? <div className={'notice notice-' + kind} role={kind === 'error' ? 'alert' : 'status'}>{children}</div> : null; }
 export function Spinner({ label = 'Loading…' }) { return <div className="spinner" role="status"><span className="spinner-dot" />{label}</div>; }
