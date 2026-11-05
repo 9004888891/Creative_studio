@@ -1,6 +1,6 @@
 # Third-party notice
 
-`src/voice-model.js` contains the weights of **Silero VAD** v5 (16 kHz model), stored as float16, and `src/voice.js` runs that network in JavaScript.
+`studio/src/voice-model.js` contains the weights of **Silero VAD** v5 (16 kHz model), stored as float16, and `studio/src/voice.js` runs that network in JavaScript.
 
 Source: https://github.com/snakers4/silero-vad
 

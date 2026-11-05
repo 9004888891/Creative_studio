@@ -1,35 +1,37 @@
 {
-  "name": "creative-heatmap",
+  "name": "creative-studio",
   "version": "1.0.0",
-  "description": "Predicted-attention heatmap, scores, AI reading and new-version generator for ad creatives. Drop-in panel for any dashboard.",
+  "private": true,
+  "description": "Creative Studio: real-estate creative analysis, checks and recommendations. MERN app (MongoDB, Express, React, Node) for Vercel.",
   "type": "module",
-  "main": "dist/creative-heatmap.esm.js",
-  "module": "dist/creative-heatmap.esm.js",
-  "exports": {
-    ".": "./dist/creative-heatmap.esm.js",
-    "./src": "./src/index.js",
-    "./style.css": "./dist/creative-heatmap.css",
-    "./server": "./server/analyze.cjs"
-  },
-  "files": [
-    "NOTICE.md",
-    "README.md",
-    "dist",
-    "examples",
-    "server",
-    "src"
-  ],
+  "engines": { "node": ">=20" },
   "scripts": {
-    "build": "node build.mjs",
-    "demo": "node server/demo-server.cjs",
-    "vercel-build": "node build.mjs && node scripts/vercel-public.mjs",
+    "dev": "node scripts/dev.mjs",
+    "dev:api": "node --watch server/local.js",
+    "dev:web": "vite --config client/vite.config.js",
+    "build": "vite build --config client/vite.config.js",
+    "start": "node server/local.js",
+    "test": "node --test tests/",
+    "create-admin": "node scripts/create-admin.mjs",
     "import-library": "node scripts/import-library.mjs"
   },
-  "license": "UNLICENSED",
   "dependencies": {
-    "@vercel/functions": "^2.2.0"
+    "@vercel/blob": "^2.3.0",
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "express": "^5.1.0",
+    "google-auth-library": "^9.15.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.17.0",
+    "zod": "^3.25.76"
   },
-  "engines": {
-    "node": ">=20"
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.0.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.8.0",
+    "supertest": "^7.1.4",
+    "vite": "^7.1.2"
   }
 }

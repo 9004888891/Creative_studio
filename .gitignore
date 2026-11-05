@@ -1,8 +1,11 @@
 node_modules/
-public/
+client/dist/
 .vercel/
 .env
 .env.*
-# Client data never goes in the repository: load it with scripts/import-library.mjs instead
+!.env.example
+coverage/
+*.log
+# Client data never goes in the repository: load it with scripts/import-library.mjs
 creative-library.json
 *.client.json
