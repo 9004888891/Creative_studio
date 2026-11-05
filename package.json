@@ -4,7 +4,9 @@
   "private": true,
   "description": "Creative Studio: real-estate creative analysis, checks and recommendations. MERN app (MongoDB, Express, React, Node) for Vercel.",
   "type": "module",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "node scripts/dev.mjs",
     "dev:api": "node --watch server/local.js",
@@ -20,11 +22,11 @@
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
     "express": "^5.1.0",
-    "google-auth-library": "^9.15.1",
+    "google-auth-library": "^10.5.0",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.17.0",
-    "zod": "^3.25.76"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^5.0.0",
@@ -33,5 +35,8 @@
     "react-router-dom": "^7.8.0",
     "supertest": "^7.1.4",
     "vite": "^7.1.2"
+  },
+  "overrides": {
+    "zod": "$zod"
   }
 }
