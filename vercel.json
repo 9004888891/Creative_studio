@@ -1,0 +1,31 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "node build.mjs && node scripts/vercel-public.mjs",
+  "outputDirectory": "public",
+  "proxy": {
+    "entrypoint": "proxy.js"
+  },
+  "functions": {
+    "api/creative-analyze.js": {
+      "maxDuration": 120
+    },
+    "api/creative-transcribe.js": {
+      "maxDuration": 120
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    }
+  ]
+}

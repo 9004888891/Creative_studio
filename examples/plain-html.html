@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Creative Studio Example</title>
+<!-- 1. styles and script (copy dist/ into your site) -->
+<link rel="stylesheet" href="/vendor/creative-heatmap/creative-heatmap.css">
+<script src="/vendor/creative-heatmap/creative-heatmap.js" defer></script>
+</head>
+<body>
+<!-- 2. a place for the panel -->
+<div id="creative-studio"></div>
+<script>
+  // 3. mount it once the script has loaded
+  window.addEventListener('DOMContentLoaded', () => {
+    const studio = new CreativeHeatmap(document.getElementById('creative-studio'), {
+      // Project details from your dashboard (used by the AI reading and the new version)
+      context: { project: 'Harbourline Residences', brand: 'Harbourline Homes', location: 'Thane', priceRange: '₹1.2 Cr – ₹2.1 Cr',
+                 configs: [{ type: '2 BHK', price: '₹1.2 Cr' }], developer: 'Harbourline Homes', rera: 'P51700000000' },
+      // Your server route (see server/analyze.cjs). Leave out to hide the AI reading.
+      ai: { endpoint: '/api/creative-analyze' },
+      // Optional: cost per qualified lead of this creative vs the project, for a performance suggestion
+      performance: creative => null,
+      // Optional: store new versions in your own file storage
+      onSave: async (blob, info) => {
+        const fd = new FormData(); fd.append('file', blob, info.name + '.jpg');
+        await fetch('/api/creatives', { method: 'POST', body: fd });
+      },
+      // Optional: keep the AI reading with the creative so it is not paid for twice
+      onAIResult: (creative, result, part) => console.log('save', creative.name, part, result),
+    });
+
+    // Creatives you already have (URLs on your own domain, or data URLs)
+    studio.add([
+      { name: 'Harbourline Residences – static 1', src: '/media/tenx-static-1.jpg' },
+      { name: 'Harbourline Residences – carousel', cards: [{ src: '/media/tenx-card-1.jpg' }, { src: '/media/tenx-card-2.jpg' }, { src: '/media/tenx-card-3.jpg' }] },
+    ]);
+  });
+</script>
+</body>
+</html>

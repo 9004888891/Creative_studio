@@ -1,0 +1,35 @@
+{
+  "name": "creative-heatmap",
+  "version": "1.0.0",
+  "description": "Predicted-attention heatmap, scores, AI reading and new-version generator for ad creatives. Drop-in panel for any dashboard.",
+  "type": "module",
+  "main": "dist/creative-heatmap.esm.js",
+  "module": "dist/creative-heatmap.esm.js",
+  "exports": {
+    ".": "./dist/creative-heatmap.esm.js",
+    "./src": "./src/index.js",
+    "./style.css": "./dist/creative-heatmap.css",
+    "./server": "./server/analyze.cjs"
+  },
+  "files": [
+    "NOTICE.md",
+    "README.md",
+    "dist",
+    "examples",
+    "server",
+    "src"
+  ],
+  "scripts": {
+    "build": "node build.mjs",
+    "demo": "node server/demo-server.cjs",
+    "vercel-build": "node build.mjs && node scripts/vercel-public.mjs",
+    "import-library": "node scripts/import-library.mjs"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@vercel/functions": "^2.2.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

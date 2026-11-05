@@ -1,0 +1,8 @@
+node_modules/
+public/
+.vercel/
+.env
+.env.*
+# Client data never goes in the repository: load it with scripts/import-library.mjs instead
+creative-library.json
+*.client.json
