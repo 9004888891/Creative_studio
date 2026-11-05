@@ -30,16 +30,19 @@ jobs:
         run: npm test
         env:
           TEST_MONGODB_URI: mongodb://127.0.0.1:27017/cs-test
-      - name: Smoke test the built app and API
+      - name: Browser test of the built app
         env:
-          MONGODB_URI: mongodb://127.0.0.1:27017/cs-smoke
-          JWT_SECRET: smoke-test-secret-0123456789abcdefghijklmnop
+          MONGODB_URI: mongodb://127.0.0.1:27017/cs-e2e
+          JWT_SECRET: e2e-test-secret-0123456789abcdefghijklmnopq
           SETUP_KEY: smoke
           APP_URL: http://localhost:3001
+          SERVE_APP: '1'
+          E2E_URL: http://localhost:3001
         run: |
-          node server/local.js & sleep 4
-          curl -fsS http://localhost:3001/api/health
-          curl -fsS http://localhost:3001/api/auth/status
+          npx playwright install --with-deps chromium
+          node server/local.js > server.log 2>&1 &
+          for i in $(seq 1 30); do curl -fsS http://localhost:3001/api/health && break; sleep 1; done
+          node tests/e2e/app.e2e.mjs || (echo '--- server log ---'; cat server.log; exit 1)
       - name: Print the lock file (when the repository has none yet)
         if: always() && hashFiles('package-lock.json') != ''
         run: |
