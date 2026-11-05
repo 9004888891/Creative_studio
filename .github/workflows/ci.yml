@@ -22,6 +22,8 @@ jobs:
           node-version: 22
       - name: Install
         run: if [ -f package-lock.json ]; then npm ci; else npm install --no-audit --no-fund; fi
+      - name: Security audit (report)
+        run: npm audit || true
       - name: Build the React app
         run: npm run build
       - name: API tests
