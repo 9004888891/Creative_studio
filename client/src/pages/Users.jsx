@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { get, post, patch, del } from '../api.js';
 import { useAuth, isAdmin, ROLE_LABEL } from '../auth.jsx';
 import { CopyLink, Field, Notice, Spinner, useAction } from '../components/ui.jsx';
@@ -25,11 +25,12 @@ function Access({ value, onChange, projects }) {
 }
 
 export default function Users() {
-  const { user } = useAuth();
+  const { user } = useAuth(), loc = useLocation();
   const [data, setData] = useState(null), [projects, setProjects] = useState([]), [link, setLink] = useState(null), [editing, setEditing] = useState(null);
   const [inv, setInv] = useState({ email: '', role: 'junior', projects: [], hideBudget: false }), { busy, error, setError, run } = useAction();
   const load = () => Promise.all([get('/users'), get('/projects')]).then(([u, p]) => { setData(u); setProjects(p.projects); }).catch(e => setError(e.message));
-  useEffect(() => { if (isAdmin(user)) load(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (isAdmin(user)) load(); }, [loc.key]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { const f = () => document.visibilityState === 'visible' && isAdmin(user) && load(); document.addEventListener('visibilitychange', f); return () => document.removeEventListener('visibilitychange', f); }, []); // eslint-disable-line react-hooks/exhaustive-deps
   if (!isAdmin(user)) return <Navigate to="/" replace />;
   if (!data) return error ? <Notice kind="error">{error}</Notice> : <Spinner />;
 
