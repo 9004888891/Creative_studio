@@ -17,7 +17,7 @@ const field = (p, label) => p.getByLabel(label, { exact: true });
 const admin = await page();
 await step('first admin is created with the setup key', async () => {
   await admin.goto(URL0);
-  await admin.getByRole('heading', { name: 'Set up Creative Studio' }).waitFor();
+  await admin.getByRole('heading', { name: 'Set up Creative Studio', exact: true }).first().waitFor();
   await field(admin, 'Your name').fill('Asha Admin');
   await field(admin, 'Email').fill('admin@example.test');
   await field(admin, 'Password').fill('admin-password-1');
@@ -26,7 +26,7 @@ await step('first admin is created with the setup key', async () => {
   await admin.getByText('That setup key is not right.').waitFor();
   await field(admin, 'Setup key').fill(KEY);
   await admin.getByRole('button', { name: 'Create admin account' }).click();
-  await admin.getByRole('heading', { name: 'Projects' }).waitFor();
+  await admin.getByRole('heading', { name: 'Projects', exact: true }).first().waitFor();
 });
 
 await step('admin creates two projects', async () => {
@@ -36,7 +36,7 @@ await step('admin creates two projects', async () => {
     await field(admin, 'Project name').fill(name);
     await field(admin, 'Developer / brand').fill(dev);
     await admin.getByRole('button', { name: 'Create project' }).click();
-    await admin.getByRole('heading', { name }).waitFor();
+    await admin.getByRole('heading', { name, exact: true }).first().waitFor();
     await admin.locator('.chm').first().waitFor();   // the studio engine is drawn
   }
 });
@@ -59,9 +59,9 @@ await step('junior joins and sees only their project', async () => {
   await field(junior, 'Your name').fill('Jay Junior');
   await field(junior, 'Password').fill('junior-password-1');
   await junior.getByRole('button', { name: 'Join' }).click();
-  await junior.getByRole('heading', { name: 'Projects' }).waitFor();
-  await junior.getByText('Harbourline Residences').waitFor();
-  assert.equal(await junior.getByText('Cedar Point').count(), 0);
+  await junior.getByRole('heading', { name: 'Projects', exact: true }).first().waitFor();
+  await junior.getByText('Harbourline Residences', { exact: true }).first().waitFor();
+  assert.equal(await junior.getByText('Cedar Point', { exact: true }).count(), 0);
   assert.equal(await junior.getByRole('link', { name: 'People' }).count(), 0);
   assert.equal(await junior.getByRole('button', { name: 'New project' }).count(), 0);
 });
@@ -75,14 +75,14 @@ await step('junior cannot open the other project by its address', async () => {
 
 await step('studio opens on the project, with its brief form', async () => {
   await junior.goto(URL0 + '/');
-  await junior.getByText('Harbourline Residences').click();
+  await junior.getByRole('link', { name: /Harbourline Residences/ }).click();
   await junior.locator('.chm').first().waitFor();
   assert.ok((await junior.locator('.chm').first().innerText()).length > 20);
 });
 
 await step('learning page loads', async () => {
   await junior.getByRole('link', { name: 'Learning' }).click();
-  await junior.getByRole('heading', { name: 'Learning' }).waitFor();
+  await junior.getByRole('heading', { name: 'Learning', exact: true }).first().waitFor();
   await junior.locator('.chm').first().waitFor();
 });
 
@@ -92,7 +92,7 @@ await step('switching the junior off signs them out', async () => {
   await row.getByRole('button', { name: 'Switch off' }).click();
   await row.getByRole('button', { name: 'Switch on' }).waitFor();
   await junior.goto(URL0 + '/');
-  await junior.getByRole('heading', { name: 'Sign in' }).waitFor();
+  await junior.getByRole('heading', { name: 'Sign in', exact: true }).first().waitFor();
 });
 
 await step('signing in with a wrong password fails, right one works', async () => {
@@ -104,7 +104,7 @@ await step('signing in with a wrong password fails, right one works', async () =
   await p.getByText('That email and password do not match.').waitFor();
   await field(p, 'Password').fill('admin-password-1');
   await p.getByRole('button', { name: 'Sign in' }).click();
-  await p.getByRole('heading', { name: 'Projects' }).waitFor();
+  await p.getByRole('heading', { name: 'Projects', exact: true }).first().waitFor();
   await p.setViewportSize({ width: 390, height: 844 });   // phone width: no sideways scroll
   assert.ok(await p.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), 'page scrolls sideways on a phone');
 });
